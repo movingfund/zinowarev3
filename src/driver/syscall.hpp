@@ -1,7 +1,13 @@
 #pragma once
+#define WIN32_NO_STATUS
 #include <windows.h>
+#include <psapi.h>
+#undef WIN32_NO_STATUS
+#pragma warning(push)
+#pragma warning(disable: 4005)
 #include <winternl.h>
 #include <ntstatus.h>
+#pragma warning(pop)
 #include <cstdint>
 #include <string>
 #include <vector>
