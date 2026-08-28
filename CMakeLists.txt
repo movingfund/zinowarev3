@@ -41,6 +41,7 @@ target_link_libraries(rbx-external PRIVATE
   winmm
   gdi32
   user32
+  psapi
 )
 
 # Keep SUBSYSTEM:CONSOLE so stdout/cerr work
