@@ -1,6 +1,16 @@
 #include "esp.hpp"
 #include "imgui.h"
 #include <string>
+#include <algorithm>   // for std::clamp (C++17)
+#include <cmath>
+
+// Helper: safe clamp if std::clamp isn't available (fallback)
+template<typename T>
+T clamp_value(T value, T min, T max) {
+    if (value < min) return min;
+    if (value > max) return max;
+    return value;
+}
 
 ESP::ESP(std::shared_ptr<RobloxSDK> sdk) : m_sdk(std::move(sdk)) {}
 
@@ -57,7 +67,8 @@ void ESP::DrawHealthBar(float health, float maxHealth, const Vector2& top, const
     float barHeight = bottom.y - top.y;
     if (barHeight < 1.0f) return;
 
-    float ratio = std::clamp(health / maxHealth, 0.0f, 1.0f);
+    // Use our own clamp function to avoid std::clamp issues
+    float ratio = clamp_value(health / maxHealth, 0.0f, 1.0f);
     ImVec2 barTopLeft(top.x - 6.0f, top.y);
     ImVec2 barBotRight(top.x - 6.0f + barWidth, bottom.y);
 
