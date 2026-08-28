@@ -1,9 +1,11 @@
 #include "triggerbot.hpp"
 #include "imgui.h"
+#include <thread>
 
 Triggerbot::Triggerbot(std::shared_ptr<RobloxSDK> sdk)
     : m_sdk(std::move(sdk))
     , m_lastFireTime(std::chrono::steady_clock::now())
+
 {
 }
 
