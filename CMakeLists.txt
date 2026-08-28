@@ -4,7 +4,6 @@ project(rbx-external LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# ── ImGui (fetched automatically) ──────────────────────────────────────────
 include(FetchContent)
 FetchContent_Declare(
   imgui
@@ -13,20 +12,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
-# ── Sources ────────────────────────────────────────────────────────────────
+# Collect all source files from src/
 file(GLOB_RECURSE SOURCES
   src/*.cpp
   src/*.hpp
 )
 
-# ImGui back-end files we need
-set(IMGUI_BACKEND
-  ${imgui_SOURCE_DIR}/backends/imgui_impl_win32.cpp
-  ${imgui_SOURCE_DIR}/backends/imgui_impl_dx11.cpp
-)
-
-# ── Target ─────────────────────────────────────────────────────────────────
-add_executable(rbx-external WIN32 ${SOURCES} ${IMGUI_BACKEND})
+# Add the executable
+add_executable(rbx-external WIN32 ${SOURCES})
 
 target_include_directories(rbx-external PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -34,7 +27,9 @@ target_include_directories(rbx-external PRIVATE
   ${imgui_SOURCE_DIR}/backends
 )
 
+# Link ImGui library and other dependencies
 target_link_libraries(rbx-external PRIVATE
+  imgui
   d3d11
   dxgi
   d3dcompiler
@@ -44,7 +39,12 @@ target_link_libraries(rbx-external PRIVATE
   psapi
 )
 
-# Keep SUBSYSTEM:CONSOLE so stdout/cerr work
+# Add ImGui backend sources (they are not part of the imgui library)
+target_sources(rbx-external PRIVATE
+  ${imgui_SOURCE_DIR}/backends/imgui_impl_win32.cpp
+  ${imgui_SOURCE_DIR}/backends/imgui_impl_dx11.cpp
+)
+
 set_target_properties(rbx-external PROPERTIES
   LINK_FLAGS "/SUBSYSTEM:CONSOLE"
 )
