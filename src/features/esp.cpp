@@ -1,11 +1,7 @@
 #include "esp.hpp"
 #include "imgui.h"
 #include <string>
-#include <algorithm>
 
-ESP::ESP(std::shared_ptr<RobloxSDK> sdk) : m_sdk(std::move(sdk)) {}
-
-// ... rest of the file is the same as before
 ESP::ESP(std::shared_ptr<RobloxSDK> sdk) : m_sdk(std::move(sdk)) {}
 
 void ESP::Render(const std::vector<PlayerData>& players, const Matrix4x4& vm, const Vector2& vp) {
